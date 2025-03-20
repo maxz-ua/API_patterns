@@ -1,4 +1,4 @@
-package org.example.api.decorator;
+package org.example.api.decorator.request;
 
 
 import io.restassured.RestAssured;

@@ -2,12 +2,12 @@ package org.example.api.singleton;
 
 public class Configuration {
     private static Configuration instance;
-    private String baseUrl;
+    private final String baseUrl;
 
     // Private constructor to prevent instantiation
     private Configuration() {
         // Initializing the baseUrl
-        this.baseUrl = "http://api.example.com";
+        this.baseUrl = "https://api.example.com";
     }
 
     // Method to get the singleton instance of Configuration

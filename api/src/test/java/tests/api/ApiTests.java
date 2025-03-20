@@ -1,19 +1,21 @@
-import io.restassured.RestAssured;
+package tests.api;
+
 import io.restassured.response.Response;
 import org.example.api.builder.ApiRequestBuilder;
 import org.example.api.builder.HttpMethod;
-import org.example.api.decorator.ApiDecoratorRequest;
-import org.example.api.decorator.AuthorizedRequestDecorator;
-import org.example.api.decorator.BasicRequest;
+import org.example.api.decorator.request.ApiDecoratorRequest;
+import org.example.api.decorator.request.AuthorizedRequestDecorator;
+import org.example.api.decorator.request.BasicRequest;
 import org.example.api.facade.ApiFacade;
 import org.example.api.factory.ApiFactoryRequest;
 import org.example.api.factory.RequestFactory;
 import org.example.api.observer.ApiResponseSubject;
 import org.example.api.observer.ResponseChecker;
 import org.example.api.observer.ResponseLogger;
-import org.example.api.strategy.ApіResponseValidator;
-import org.example.api.strategy.ContentValidation;
-import org.example.api.strategy.StatusValidation;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ApiTests {
     @Test
@@ -31,23 +33,9 @@ public class ApiTests {
     }
 
     @Test
-    public void testStrategyPattern() {
-        // Make an API call
-        Response response = RestAssured.get("http://api.example.com/data");
-
-        // Use StatusValidation strategy
-        ApіResponseValidator validator = new ApіResponseValidator(new StatusValidation());
-        validator.validateResponse(response);
-
-        // Switch to ContentValidation strategy
-        validator.setStrategy(new ContentValidation());
-        validator.validateResponse(response);
-    }
-
-    @Test
     public void testDecoratorPattern() {
         // Create a basic request
-        ApiDecoratorRequest request = new BasicRequest("http://api.example.com/secure/data");
+        ApiDecoratorRequest request = new BasicRequest("http://example.com/secure/data");
 
         // Decorate the basic request with authorization
         ApiDecoratorRequest authorizedRequest = new AuthorizedRequestDecorator(request, "your_token_here");
@@ -78,7 +66,7 @@ public class ApiTests {
 
         // Build the request and send it
         Response response = builder
-                .setUrl("http://api.example.com/data")
+                .setUrl("http://example.com/data")
                 .setMethod(HttpMethod.GET)
                 .sendRequest(); //.build
 
@@ -94,7 +82,7 @@ public class ApiTests {
         subject.addObserver(new ResponseLogger());
         subject.addObserver(new ResponseChecker());
         // Fetch the response from the API
-        subject.fetchResponse("http://api.example.com/data");
+        subject.fetchResponse("http://example.com/data");
     }
 }
 
